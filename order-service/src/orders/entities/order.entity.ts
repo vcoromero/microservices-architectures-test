@@ -1,12 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-} from 'typeorm';
-import { OrderItem } from './order-item.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Order {
@@ -14,17 +6,11 @@ export class Order {
   id: number;
 
   @Column()
-  customerName: string; // Puedes añadir más campos según sea necesario
+  customerName: string;
 
-  @OneToMany(() => OrderItem, (orderItem) => orderItem.order, {
-    cascade: true,
-    eager: true,
-  })
-  items: OrderItem[];
+  @Column('json')
+  productIds: number[];
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @Column('json')
+  quantities: number[];
 }
