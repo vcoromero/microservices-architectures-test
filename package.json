@@ -1,0 +1,14 @@
+{
+  "name": "microservices-architectures-test",
+  "version": "1.0.0",
+  "scripts": {
+    "start:product-service": "cd product-service && npm run start",
+    "start:order-service": "cd order-service && npm run start",
+    "start:gateway": "cd go-api-gateway && go run main.go",
+    "start:services": "concurrently \"npm run start:product-service\" \"npm run start:order-service\"",
+    "start:all": "concurrently \"npm run start:services\" \"npm run start:gateway\""
+  },
+  "dependencies": {
+    "concurrently": "^6.2.1"
+  }
+}

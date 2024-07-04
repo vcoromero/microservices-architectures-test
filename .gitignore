@@ -1,0 +1,57 @@
+# Node.js
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+lerna-debug.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+__pycache__/
+
+# NestJS
+# Ignore built files
+/product-service/dist/
+/product-service/node_modules/
+/product-service/coverage/
+/product-service/logs/
+/product-service/.env
+
+/order-service/dist/
+/order-service/node_modules/
+/order-service/coverage/
+/order-service/logs/
+/order-service/.env
+
+# Ignore test files
+/product-service/coverage/
+/product-service/.nyc_output/
+/product-service/.coverage/
+
+/order-service/coverage/
+/order-service/.nyc_output/
+/order-service/.coverage/
+
+# Ignore temporary files
+/product-service/tmp/
+/product-service/temp/
+/order-service/tmp/
+/order-service/temp/
+
+# Go
+/go-api-gateway/bin/
+/go-api-gateway/pkg/
+/go-api-gateway/*.exe
+/go-api-gateway/*.test
+/go-api-gateway/*.out
