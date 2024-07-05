@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { Product } from './products/entities/product.entity';
-import { ProductsModule } from './products/products.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ProductsModule } from './products/products.module';
+import { Product } from './products/entities/product.entity';
 
 @Module({
   imports: [
@@ -12,11 +10,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       isGlobal: true,
       envFilePath: '../.env',
     }),
-    ProductsModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        type: configService.get<string>('DB_TYPE') as any,
+        type: 'mysql',
         host: configService.get<string>('DB_HOST'),
         port: configService.get<number>('DB_PORT'),
         username: configService.get<string>('DB_USER'),
@@ -27,8 +24,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
       inject: [ConfigService],
     }),
+    ProductsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

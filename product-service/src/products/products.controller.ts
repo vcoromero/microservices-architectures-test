@@ -1,42 +1,42 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { Controller } from '@nestjs/common';
+import { GrpcMethod } from '@nestjs/microservices';
 import { ProductsService } from './products.service';
+import {
+  CreateRequest,
+  DeleteRequest,
+  FindAllResponse,
+  FindOneRequest,
+  FindOneResponse,
+  ProductResponse,
+  UpdateRequest,
+} from 'proto/product_pb';
 
-@Controller('products')
+@Controller()
 export class ProductsController {
-  constructor(private readonly productService: ProductsService) {}
+  constructor(private readonly productsService: ProductsService) {}
 
-  @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
+  @GrpcMethod('ProductService', 'Create')
+  create(data: CreateRequest): Promise<ProductResponse> {
+    return this.productsService.create(data);
   }
 
-  @Get()
-  findAll() {
-    return this.productService.findAll();
+  @GrpcMethod('ProductService', 'FindAll')
+  findAll(): Promise<FindAllResponse> {
+    return this.productsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.productService.findOne(id);
+  @GrpcMethod('ProductService', 'FindOne')
+  findOne(data: FindOneRequest): Promise<FindOneResponse> {
+    return this.productsService.findOne(data);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: number, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.update(id, updateProductDto);
+  @GrpcMethod('ProductService', 'Update')
+  update(data: UpdateRequest): Promise<ProductResponse> {
+    return this.productsService.update(data);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.productService.remove(id);
+  @GrpcMethod('ProductService', 'Delete')
+  delete(data: DeleteRequest): Promise<ProductResponse> {
+    return this.productsService.delete(data);
   }
 }

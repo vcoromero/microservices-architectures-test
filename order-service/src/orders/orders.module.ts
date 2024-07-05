@@ -4,6 +4,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { OrdersService } from './orders.service';
 import { OrdersController } from './orders.controller';
 import { Order } from './entities/order.entity';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { Order } from './entities/order.entity';
         transport: Transport.GRPC,
         options: {
           package: 'product',
-          protoPath: '../proto/product.proto',
+          protoPath: join(process.cwd(), 'proto/product.proto'),
         },
       },
     ]),

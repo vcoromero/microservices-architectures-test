@@ -6,9 +6,9 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { Order } from './entities/order.entity';
 import { lastValueFrom } from 'rxjs';
 import {
+  FindOneRequest,
+  FindOneResponse,
   ProductServiceClient,
-  GetProductRequest,
-  GetProductResponse,
 } from './proto/product.interface';
 
 @Injectable()
@@ -28,17 +28,15 @@ export class OrdersService implements OnModuleInit {
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
     for (const id of createOrderDto.productIds) {
-      const product: GetProductResponse = await lastValueFrom(
-        this.productService.getProduct({ id } as GetProductRequest),
+      const product: FindOneResponse = await lastValueFrom(
+        this.productService.FindOne({ id } as FindOneRequest),
       );
       if (
         !product ||
         product.quantity <
           createOrderDto.quantities[createOrderDto.productIds.indexOf(id)]
       ) {
-        throw new Error(
-          `Product ${product.name} not available or insufficient quantity`,
-        );
+        throw new Error('Product not available or insufficient quantity');
       }
     }
 
@@ -51,8 +49,21 @@ export class OrdersService implements OnModuleInit {
     return this.ordersRepository.save(order);
   }
 
-  async findAll(): Promise<Order[]> {
-    const orders: Order[] = await this.ordersRepository.find();
-    return orders;
+  async findAll(): Promise<any[]> {
+    const orders = await this.ordersRepository.find();
+    const detailedOrders = [];
+
+    for (const order of orders) {
+      const products = await Promise.all(
+        order.productIds.map(async (id) => {
+          return await lastValueFrom(
+            this.productService.FindOne({ id } as FindOneRequest),
+          );
+        }),
+      );
+      detailedOrders.push({ ...order, products });
+    }
+
+    return detailedOrders;
   }
 }

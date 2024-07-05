@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Product } from './entities/product.entity';
-import { ProductsService } from './products.service';
-import { ProductsController } from './products.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { join } from 'path';
+import { ProductsController } from './products.controller';
+import { ProductsService } from './products.service';
+import { Product } from './entities/product.entity';
 
 @Module({
   imports: [
@@ -14,12 +15,12 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         transport: Transport.GRPC,
         options: {
           package: 'product',
-          protoPath: '../proto/product.proto',
+          protoPath: join(process.cwd(), 'proto/product.proto'),
         },
       },
     ]),
   ],
-  controllers: [ProductsController],
   providers: [ProductsService],
+  controllers: [ProductsController],
 })
 export class ProductsModule {}

@@ -1,14 +1,14 @@
 import { Observable } from 'rxjs';
 
 export interface ProductServiceClient {
-  getProduct(request: GetProductRequest): Observable<GetProductResponse>;
+  FindOne(request: FindOneRequest): Observable<FindOneResponse>;
 }
 
-export interface GetProductRequest {
+export interface FindOneRequest {
   id: number;
 }
 
-export interface GetProductResponse {
+export interface FindOneResponse {
   id: number;
   name: string;
   description: string;
