@@ -12,39 +12,56 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
-  # product-service:
-  #   build:
-  #     context: ./product-service
-  #   environment:
-  #     - PRODUCT_SERVICE_PORT=${PRODUCT_SERVICE_PORT}
-  #     - DB_HOST=mysql
-  #     - DB_PORT=${DB_PORT}
-  #     - DB_NAME=${DB_NAME}
-  #     - DB_USER=${DB_USER}
-  #     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-  #   ports:
-  #     - "${PRODUCT_SERVICE_PORT}:${PRODUCT_SERVICE_PORT}"
-  #   volumes:
-  #     - ./product-service:/app
-  #   depends_on:
-  #     - mysql
+  product-service:
+    build:
+      context: ./product-service
+    environment:
+      - PRODUCT_SERVICE_PORT=${PRODUCT_SERVICE_PORT}
+      - DB_HOST=mysql
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${PRODUCT_SERVICE_PORT}:${PRODUCT_SERVICE_PORT}"
+    volumes:
+      - ./product-service:/app
+    depends_on:
+      - mysql
 
-  # order-service:
-  #   build:
-  #     context: ./order-service
-  #   environment:
-  #     - ORDER_SERVICE_PORT=${ORDER_SERVICE_PORT}
-  #     - DB_HOST=mysql
-  #     - DB_PORT=${DB_PORT}
-  #     - DB_NAME=${DB_NAME}
-  #     - DB_USER=${DB_USER}
-  #     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-  #   ports:
-  #     - "${ORDER_SERVICE_PORT}:${ORDER_SERVICE_PORT}"
-  #   volumes:
-  #     - ./order-service:/app
-  #   depends_on:
-  #     - mysql
+  order-service:
+    build:
+      context: ./order-service
+    environment:
+      - ORDER_SERVICE_PORT=${ORDER_SERVICE_PORT}
+      - DB_HOST=mysql
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${ORDER_SERVICE_PORT}:${ORDER_SERVICE_PORT}"
+    volumes:
+      - ./order-service:/app
+    depends_on:
+      - mysql
+
+  go-api-gateway:
+    build:
+      context: ./go-api-gateway
+    environment:
+      - API_GATEWAY_PORT=${API_GATEWAY_PORT}
+      - PRODUCT_SERVICE_HOST=product-service
+      - PRODUCT_SERVICE_PORT=${PRODUCT_SERVICE_PORT}
+      - ORDER_SERVICE_HOST=order-service
+      - ORDER_SERVICE_PORT=${ORDER_SERVICE_PORT}
+    ports:
+      - "${API_GATEWAY_PORT}:${API_GATEWAY_PORT}"
+    volumes:
+      - ./go-api-gateway:/app
+    depends_on:
+      - product-service
+      - order-service
 
 volumes:
   mysql-data:

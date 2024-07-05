@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start:product-service": "cd product-service && npm run start",
-    "compile:proto": "cd grpc-protocols && npm run compile",
     "start:order-service": "cd order-service && npm run start",
+    "compile:proto": "cd grpc-protocols && npm run compile",
     "start:gateway": "cd go-api-gateway && go run main.go",
     "start:services": "concurrently \"npm run start:product-service\" \"npm run start:order-service\"",
     "start:all": "concurrently \"npm run start:services\" \"npm run start:gateway\""

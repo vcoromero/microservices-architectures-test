@@ -53,12 +53,12 @@ export class ProductsService {
 
   async findOne(data: FindOneRequest): Promise<FindOneResponse> {
     const product = await this.productsRepository.findOne({
-      where: { id: data.getId() },
+      where: { id: data.id },
     });
-    if (!product) {
-      throw new Error('Product not found');
-    }
     const response = new FindOneResponse();
+    if (!product) {
+      return response;
+    }
     response.setId(product.id);
     response.setName(product.name);
     response.setDescription(product.description);
@@ -69,7 +69,7 @@ export class ProductsService {
 
   async update(data: UpdateRequest): Promise<ProductResponse> {
     const updatedProduct = await this.productsRepository.update(
-      data.getId(),
+      data.id(),
       data.toObject(),
     );
 
@@ -80,7 +80,7 @@ export class ProductsService {
   }
 
   async delete(data: DeleteRequest): Promise<ProductResponse> {
-    const deletedProduct = await this.productsRepository.delete(data.getId());
+    const deletedProduct = await this.productsRepository.delete(data.id());
     const response = new ProductResponse();
     response.setSuccess(deletedProduct.affected! > 0 ? true : false);
 

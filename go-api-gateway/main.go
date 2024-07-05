@@ -1,8 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"log"
+	"net/http"
+
+	"microservices-architectures-test/go-api-gateway/src/routes"
+
+	"github.com/gorilla/mux"
+)
 
 func main() {
+	router := mux.NewRouter()
 
-	fmt.Println("Hello, World!")
+	routes.RegisterRoutes(router)
+
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
