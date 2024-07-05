@@ -20,13 +20,18 @@ export class ProductsService {
   ) {}
 
   async create(data: CreateRequest): Promise<ProductResponse> {
-    const product = await this.productsRepository.create(data.toObject());
-    const productCreated = await this.productsRepository.save(product);
+    const product = new Product();
+    product.name = data.getName();
+    product.description = data.getDescription();
+    product.price = data.getPrice();
+    product.quantity = data.getQuantity();
+
+    const newProduct = await this.productsRepository.save(product);
 
     const response = new ProductResponse();
-    response.setSuccess(productCreated.id! == undefined ? false : true);
+    response.setSuccess(newProduct ? true : false);
 
-    return response;
+    return;
   }
 
   async findAll(): Promise<FindAllResponse> {

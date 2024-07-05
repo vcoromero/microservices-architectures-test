@@ -15,7 +15,15 @@ import { Product } from './entities/product.entity';
         transport: Transport.GRPC,
         options: {
           package: 'product',
-          protoPath: join(process.cwd(), 'proto/product.proto'),
+          protoPath: join(
+            __dirname,
+            '..',
+            '..',
+            '..',
+            'grpc-protocols',
+            'proto',
+            'product.proto',
+          ),
         },
       },
     ]),

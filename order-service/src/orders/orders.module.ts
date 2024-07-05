@@ -15,7 +15,15 @@ import { OrdersService } from './orders.service';
         transport: Transport.GRPC,
         options: {
           package: 'product',
-          protoPath: join(process.cwd(), 'proto/product.proto'),
+          protoPath: join(
+            __dirname,
+            '..',
+            '..',
+            '..',
+            'grpc-protocols',
+            'proto',
+            'product.proto',
+          ),
         },
       },
       {
@@ -23,7 +31,15 @@ import { OrdersService } from './orders.service';
         transport: Transport.GRPC,
         options: {
           package: 'order',
-          protoPath: join(process.cwd(), 'proto/order.proto'),
+          protoPath: join(
+            __dirname,
+            '..',
+            '..',
+            '..',
+            'grpc-protocols',
+            'proto',
+            'order.proto',
+          ),
         },
       },
     ]),

@@ -1,0 +1,11 @@
+{
+  "name": "grpc-protocols",
+  "version": "1.0.0",
+  "scripts": {
+    "compile": "./compile_protos.sh"
+  },
+  "devDependencies": {
+    "grpc-tools": "^1.11.2",
+    "protoc-gen-grpc": "^1.0.0"
+  }
+}
