@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   mysql:
     image: mysql:5.7
@@ -9,6 +11,40 @@ services:
       - "${DB_PORT}:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+
+  # product-service:
+  #   build:
+  #     context: ./product-service
+  #   environment:
+  #     - PRODUCT_SERVICE_PORT=${PRODUCT_SERVICE_PORT}
+  #     - DB_HOST=mysql
+  #     - DB_PORT=${DB_PORT}
+  #     - DB_NAME=${DB_NAME}
+  #     - DB_USER=${DB_USER}
+  #     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+  #   ports:
+  #     - "${PRODUCT_SERVICE_PORT}:${PRODUCT_SERVICE_PORT}"
+  #   volumes:
+  #     - ./product-service:/app
+  #   depends_on:
+  #     - mysql
+
+  # order-service:
+  #   build:
+  #     context: ./order-service
+  #   environment:
+  #     - ORDER_SERVICE_PORT=${ORDER_SERVICE_PORT}
+  #     - DB_HOST=mysql
+  #     - DB_PORT=${DB_PORT}
+  #     - DB_NAME=${DB_NAME}
+  #     - DB_USER=${DB_USER}
+  #     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+  #   ports:
+  #     - "${ORDER_SERVICE_PORT}:${ORDER_SERVICE_PORT}"
+  #   volumes:
+  #     - ./order-service:/app
+  #   depends_on:
+  #     - mysql
 
 volumes:
   mysql-data:

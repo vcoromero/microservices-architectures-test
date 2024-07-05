@@ -1,0 +1,15 @@
+FROM node:20.15.0
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm set registry https://registry.npmjs.org/ \
+  && npm login --scope=@yourscope --registry=https://registry.npmjs.org/ --auth-type=legacy \
+  && npm install
+
+COPY . .
+
+EXPOSE ${PRODUCT_SERVICE_PORT}
+
+CMD ["npm", "run", "start"]
