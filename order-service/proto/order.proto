@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package order;
+
+service OrderService {
+  rpc Create (CreateOrderRequest) returns (OrderResponse);
+  rpc FindAll (Empty) returns (FindAllResponse);
+}
+
+message CreateOrderRequest {
+  string customerName = 1;
+  repeated int32 productIds = 2;
+  repeated int32 quantities = 3;
+}
+
+message OrderResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message Empty {}
+
+message FindAllResponse {
+  repeated FindOneOrderResponse orders = 1;
+}
+
+message FindOneOrderResponse {
+  int32 id = 1;
+  string customerName = 2;
+  repeated Product products = 3;
+  repeated int32 quantities = 4;
+}
+
+message Product {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  float price = 4;
+}

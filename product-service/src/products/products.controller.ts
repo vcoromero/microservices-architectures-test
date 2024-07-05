@@ -1,6 +1,5 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
-import { ProductsService } from './products.service';
 import {
   CreateRequest,
   DeleteRequest,
@@ -10,6 +9,7 @@ import {
   ProductResponse,
   UpdateRequest,
 } from 'proto/product_pb';
+import { ProductsService } from './products.service';
 
 @Controller()
 export class ProductsController {

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { OrdersService } from './orders.service';
-import { OrdersController } from './orders.controller';
-import { Order } from './entities/order.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { Order } from './entities/order.entity';
+import { OrdersController } from './orders.controller';
+import { OrdersService } from './orders.service';
 
 @Module({
   imports: [
@@ -16,6 +16,14 @@ import { join } from 'path';
         options: {
           package: 'product',
           protoPath: join(process.cwd(), 'proto/product.proto'),
+        },
+      },
+      {
+        name: 'ORDER_SERVICE',
+        transport: Transport.GRPC,
+        options: {
+          package: 'order',
+          protoPath: join(process.cwd(), 'proto/order.proto'),
         },
       },
     ]),
