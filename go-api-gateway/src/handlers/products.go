@@ -25,9 +25,11 @@ func GetProducts(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("did not connect to Product service: %v", err)
 	}
 	defer productConn.Close()
-	productClient := pbProduct.NewProductServiceClient(productConn)
 
-	resp, err := productClient.FindAll(context.Background(), &pbProduct.FindAllRequest{})
+	productClient := pbProduct.NewProductServiceClient(productConn)
+	req := &pbProduct.FindAllRequest{}
+
+	resp, err := productClient.FindAll(context.Background(), req)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -97,11 +99,21 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, "Invalid product ID", http.StatusBadRequest)
+		return
+	}
+	req.Id = int32(id)
+
 	resp, err := productClient.Update(context.Background(), &req)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(resp)
 }

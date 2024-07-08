@@ -21,17 +21,17 @@ export class ProductsService {
 
   async create(data: CreateRequest): Promise<ProductResponse> {
     const product = new Product();
-    product.name = data.getName();
-    product.description = data.getDescription();
-    product.price = data.getPrice();
-    product.quantity = data.getQuantity();
+    product.name = data.name;
+    product.description = data.description;
+    product.price = data.price;
+    product.quantity = data.quantity;
 
     const newProduct = await this.productsRepository.save(product);
 
     const response = new ProductResponse();
-    response.setSuccess(newProduct ? true : false);
+    response.success = newProduct ? true : false;
 
-    return;
+    return response;
   }
 
   async findAll(): Promise<FindAllResponse> {
@@ -40,15 +40,17 @@ export class ProductsService {
 
     products.forEach((product) => {
       const productResponse = new FindOneResponse();
-      productResponse.setId(product.id);
-      productResponse.setName(product.name);
-      productResponse.setDescription(product.description);
-      productResponse.setPrice(product.price);
-      productResponse.setQuantity(product.quantity);
+      productResponse.id = product.id;
+      productResponse.name = product.name;
+      productResponse.description = product.description;
+      productResponse.price = product.price;
+      productResponse.quantity = product.quantity;
       response.addProducts(productResponse);
     });
 
-    return response;
+    console.log('findall', response);
+
+    return response[0];
   }
 
   async findOne(data: FindOneRequest): Promise<FindOneResponse> {
@@ -59,30 +61,28 @@ export class ProductsService {
     if (!product) {
       return response;
     }
-    response.setId(product.id);
-    response.setName(product.name);
-    response.setDescription(product.description);
-    response.setPrice(product.price);
-    response.setQuantity(product.quantity);
+    response.id = product.id;
+    response.name = product.name;
+    response.description = product.description;
+    response.price = product.price;
+    response.quantity = product.quantity;
+
     return response;
   }
 
   async update(data: UpdateRequest): Promise<ProductResponse> {
-    const updatedProduct = await this.productsRepository.update(
-      data.id(),
-      data.toObject(),
-    );
+    const updatedProduct = await this.productsRepository.update(data.id, data);
 
     const response = new ProductResponse();
-    response.setSuccess(updatedProduct.affected! > 0 ? true : false);
+    response.success = updatedProduct.affected! > 0 ? true : false;
 
     return response;
   }
 
   async delete(data: DeleteRequest): Promise<ProductResponse> {
-    const deletedProduct = await this.productsRepository.delete(data.id());
+    const deletedProduct = await this.productsRepository.delete(data.id);
     const response = new ProductResponse();
-    response.setSuccess(deletedProduct.affected! > 0 ? true : false);
+    response.success = deletedProduct.affected! > 0 ? true : false;
 
     return response;
   }
