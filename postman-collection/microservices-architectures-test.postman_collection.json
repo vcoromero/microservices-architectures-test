@@ -40,8 +40,8 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1",
-									"uuid": "f61d43b9-4b9c-4947-918b-b34c9130a182"
+									"value": "3",
+									"uuid": "e541a2a6-d8ab-4399-a46e-eaa2aebced68"
 								}
 							]
 						}
@@ -55,7 +55,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Producto 2\",\n    \"description\": \"desc producto 2\",\n    \"price\": \"9.99\",\n    \"quantity\":290\n}",
+							"raw": "{\n    \"name\": \"Producto 2\",\n    \"description\": \"desc producto 2\",\n    \"price\": 9.99,\n    \"quantity\":290\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -78,7 +78,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Producto 1 modificado\",\n    \"description\": \"desc producto 1\",\n    \"price\": \"9.99\",\n    \"quantity\":10\n}",
+							"raw": "{\n    \"name\": \"Producto 2 modificadisimo\",\n    \"description\": \"desc producto 2\",\n    \"price\": 9.99,\n    \"quantity\":290\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -97,7 +97,7 @@
 								{
 									"key": "id",
 									"value": "1",
-									"uuid": "c3b87106-c5d2-43d9-8b64-967f6599ca81"
+									"uuid": "4b30ddf6-ad0b-4dcd-83b8-6c39ccbdc776"
 								}
 							]
 						}
@@ -120,8 +120,8 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1",
-									"uuid": "c7a4eb26-2b65-4b09-994e-a157584ec3b1"
+									"value": "4",
+									"uuid": "9f985adb-793d-4dc0-bfb9-9b983837c1fa"
 								}
 							]
 						}
@@ -139,14 +139,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4000/orders",
-							"protocol": "http",
+							"raw": "{{orders-path}}",
 							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"orders"
+								"{{orders-path}}"
 							]
 						}
 					},
@@ -157,15 +152,19 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerName\": \"law\",\n    \"productIds\": [1,2],\n    \"quantities\": [2,1]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:4000/orders",
-							"protocol": "http",
+							"raw": "{{orders-path}}",
 							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"orders"
+								"{{orders-path}}"
 							]
 						}
 					},
