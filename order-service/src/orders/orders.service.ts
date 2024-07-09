@@ -32,21 +32,21 @@ export class OrdersService implements OnModuleInit {
   }
 
   async create(data: CreateOrderRequest): Promise<OrderResponse> {
-    for (const id of data.getProductidsList()) {
-      await this.checkProductAvailability(id, data.toObject());
+    for (const id of data.productIds) {
+      await this.checkProductAvailability(id, data);
     }
 
     const order = await this.ordersRepository.create({
-      customerName: data.getCustomername(),
-      productIds: data.getProductidsList(),
-      quantities: data.getQuantitiesList(),
+      customerName: data.customerName,
+      productIds: data.productIds,
+      quantities: data.quantities,
     });
 
     const orderCreated = await this.ordersRepository.save(order);
 
     const response = new OrderResponse();
-    response.setSuccess(orderCreated.id! == undefined ? false : true);
-    response.setMessage('Order created successfully');
+    response.success = orderCreated.id! == undefined ? false : true;
+    response.message = 'Order created successfully';
 
     return response;
   }
@@ -67,21 +67,23 @@ export class OrdersService implements OnModuleInit {
     const response = new FindAllResponse();
     detailedOrders.forEach((order) => {
       const orderResponse = new FindOneOrderResponse();
-      orderResponse.setId(order.id);
-      orderResponse.setCustomername(order.customerName);
-      orderResponse.setProductsList(order.products);
-      orderResponse.setQuantitiesList(order.quantities);
+      orderResponse.id = order.id;
+      orderResponse.customerName = order.customerName;
+      orderResponse.products = order.products;
+      orderResponse.quantities = order.quantities;
       response.addOrders(orderResponse);
     });
 
     return response;
   }
 
-  private async checkProductAvailability(id, createOrderDto): Promise<void> {
+  private async checkProductAvailability(
+    id: string,
+    order: CreateOrderRequest,
+  ): Promise<void> {
     const product: FindOneResponse = await this.findOne(id);
 
-    const requiredQuantity =
-      createOrderDto.quantities[createOrderDto.productIds.indexOf(id)];
+    const requiredQuantity = order.quantities[order.productIds.indexOf(id)];
     const evaluate = !product || product.quantity < requiredQuantity;
     if (evaluate) {
       throw new Error('Product not available or insufficient quantity');
